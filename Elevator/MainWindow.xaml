@@ -1,0 +1,36 @@
+﻿<Window x:Class="Elevator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Elevator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="263.2">
+    <Grid>
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Height="410" VerticalAlignment="Top" Margin="0,10,0,0" HorizontalAlignment="Left" Width="257" >
+            <Canvas Name="svg8" Width="152" Height="302">
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0" Y="0"/>
+                </Canvas.RenderTransform>
+                <Canvas.Resources/>
+                <!--Unknown tag: sodipodi:namedview-->
+                <!--Unknown tag: metadata-->
+                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="position" Fill="Green" StrokeThickness="0.26010618" Height="30" Stretch="Fill" Canvas.Top="237" Canvas.Left="10">
+                    <Path.Data>
+                        <PathGeometry Figures="M -1.8125725 197.74409 H 21.176208 v 12.2028 H -1.8125725 Z m 32.1736345 6.37215 -16.824154 12.37417 v -25.21522 z" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+                <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="47" Canvas.Top="0" Width="53" Height="56" x:Name="door2" Fill="#FFB3B3B3" StrokeThickness="0.24552356" Stroke="#FF000000"/>
+                <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="73" Width="1" Height="56" x:Name="opendoor2" Fill="#FF000000" StrokeThickness="0.26812381" Stroke="#FF000000"/>
+                <Button x:Name="btnLvl2" Content="" Height="22" Canvas.Left="105" Canvas.Top="17" Width="22" Click="btnsClick" Tag="2"/>
+                <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="47" Canvas.Top="112" Width="53" Height="56" x:Name="door1" Fill="#FFB3B3B3" StrokeThickness="0.24552356" Stroke="#FF000000"/>
+                <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="73" Canvas.Top="112" Width="1" Height="56" x:Name="opendoor1" Fill="#FF000000" StrokeThickness="0.26812381" Stroke="#FF000000"/>
+                <Button x:Name="btnLvl1" Content="" Height="22" Canvas.Left="105" Canvas.Top="129" Width="22" Click="btnsClick" Tag="1"/>
+                <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="47" Canvas.Top="224" Width="53" Height="56" x:Name="door0" Fill="#FFB3B3B3" StrokeThickness="0.24552356" Stroke="#FF000000"/>
+                <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="73" Canvas.Top="224" Width="1" Height="56" x:Name="opendoor0" Fill="#FF000000" StrokeThickness="0.26812381" Stroke="#FF000000"/>
+                <Button x:Name="btnLvl0" Content="" Height="22" Canvas.Left="105" Canvas.Top="241" Width="22" Click="btnsClick" Tag="0"/>
+
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</Window>
