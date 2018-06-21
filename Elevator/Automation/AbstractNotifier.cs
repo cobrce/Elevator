@@ -5,7 +5,6 @@ namespace Elevator.Automation
 {
     abstract class AbstractNotifier : INotifier
     {
-        protected Shape _shape;
         protected int _plcIoPoint;
         public event EventHandler LevelHigh;
         public event EventHandler LevelLow;
@@ -23,20 +22,19 @@ namespace Elevator.Automation
             set
             {
                 if (value > 0)
-                    LevelHigh?.Invoke(_shape, null);
+                    LevelHigh?.Invoke(this, null);
                 else
-                    LevelLow?.Invoke(_shape, null);
+                    LevelLow?.Invoke(this, null);
                 if (value != State)
-                    OnEdge?.Invoke(_shape, new StateEventArgs(value));
+                    OnEdge?.Invoke(this, new StateEventArgs(value));
 
                 _state = value;
             }
         }
 
-        public AbstractNotifier(int plcIoPoint, Shape shape)
+        public AbstractNotifier(int plcIoPoint)
         {
             _plcIoPoint = plcIoPoint;
-            _shape = shape;
         }
     }
 }

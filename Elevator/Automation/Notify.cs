@@ -8,7 +8,7 @@ namespace Elevator.Automation
 {
     internal class Notifier : AbstractNotifier
     {
-        public Notifier(int plcIoPoint, Shape shape) : base(plcIoPoint, shape)
+        public Notifier(int plcIoPoint) : base(plcIoPoint)
         {
 
         }

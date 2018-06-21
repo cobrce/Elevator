@@ -24,50 +24,97 @@ namespace Elevator
     {
         DummyPLC _plc;
         private IO _io;
-        IAnimation _moveUpDown = new MoveUpDown(1);
-        Shape[] _doorsShapes;
+        IAnimation _moveUpDown;
+        IAnimation _doorsOpenClose;
 
+        Shape[] _doorsShapes;
         public MainWindow()
         {
             InitializeComponent();
-            InitializeAutomation();
             _doorsShapes = new Shape[] { door0, door1, door2 };
+
+
+            InitializeAutomation();
+            InitAnimations();
+
+        }
+
+        private void InitAnimations()
+        {
+            _moveUpDown = new MoveUpDown(1);
+            _doorsOpenClose = new OpenCloseDoor(1, door0.Width - 10, 2);
         }
 
         private void InitializeAutomation()
         {
-            _plc = new DummyPLC(position);
             /// this is just a dummy plc, ordinary the doors and engine are not defined in IPLC
-            ///
-            SetEngineEventHandlers(_plc.Engines.Item1, _plc.Engines.Item2);
-            _io = new IO(_plc, new IOContext(_plc.Doors, _plc.Engines));
+            _plc = new DummyPLC(3);
+
+            SetEngineEventHandlers(_plc.Engines.Item1, _plc.Engines.Item2, _plc.OpenCloseDoor);
+
+            _io = new IO(
+                _plc,
+                new IOContext(
+                    _plc.Doors,
+                    _plc.Engines.Item1,
+                    _plc.Engines.Item2,
+                    _plc.OpenCloseDoor
+                    )
+                );
         }
 
-        private void SetEngineEventHandlers(Notifier engineUp, Notifier engineDown)
+        private void SetEngineEventHandlers(Notifier engineUp, Notifier engineDown, Tuple<Notifier, Notifier>[] openCloseDoorNotifiers)
         {
+            if (openCloseDoorNotifiers.Length != _doorsShapes.Length)
+                throw new ArgumentOutOfRangeException($"The count of openCloseDoorNotifiers should be {_doorsShapes.Length} (equal to the number of doors)");
+
             engineUp.LevelHigh += EngineUp_LevelHigh;
             engineDown.LevelHigh += EngineDown_LevelHigh;
+
+            for (int i = 0; i < openCloseDoorNotifiers.Length; i++)
+            {
+                openCloseDoorNotifiers[i].Item1.LevelHigh += (s, e) =>
+                 {
+                     DoorOpenClose(i, 1);
+                 };
+
+                openCloseDoorNotifiers[i].Item1.LevelHigh += (s, e) =>
+                {
+                    DoorOpenClose(i, 0);
+                };
+            }
         }
+
 
         private void EngineDown_LevelHigh(object sender, EventArgs e)
         {
-            Animate(0);
+            UpDownAnimate(0);
         }
 
         private void EngineUp_LevelHigh(object sender, EventArgs e)
         {
-            Animate(1);
+            UpDownAnimate(1);
         }
-
-        private void Animate(int direction)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="direction">1 up, 0 down</param>
+        private void UpDownAnimate(int direction)
         {
-            position.Dispatcher.Invoke((Action)(() => { AnimateInvoked(direction); }));
+            position.Dispatcher.Invoke((Action)(() =>
+            {
+                _moveUpDown.Animate(position, direction);
+                ElevatorMoved();
+            }));
         }
-
-        private void AnimateInvoked(int direction)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="open">1 open, 0 close</param>
+        private void DoorOpenClose(int level, int open)
         {
-            _moveUpDown.Animate(position, direction);
-            ElevatorMoved();
+            _doorsOpenClose.Animate(_doorsShapes[level], open);
         }
 
         private void ElevatorMoved()

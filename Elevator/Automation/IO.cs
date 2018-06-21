@@ -27,17 +27,30 @@ namespace Elevator.Automation
 
         private IO()
         {
-            _backgroundWorker.DoWork += _backgroundWorker_DoWork;
+            _backgroundWorker.DoWork += PollingLoop;
             _backgroundWorker.RunWorkerAsync();
         }
 
-        private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void PollingLoop(object sender, DoWorkEventArgs e)
         {
             while (_running)
             {
                 ReadState(_ioContext.EngineUP);
                 ReadState(_ioContext.EngineDown);
+
+                foreach (var notifier in EnumerateNotifiers(_ioContext.OpenCloseDoor))
+                    ReadState(notifier);
+
                 Thread.Sleep(_msTimeout);
+            }
+        }
+
+        private IEnumerable<Notifier> EnumerateNotifiers(Tuple<Notifier, Notifier>[] notifiersTupleArray)
+        {
+            foreach (var tpl in notifiersTupleArray)
+            {
+                yield return tpl.Item1;
+                yield return tpl.Item2;
             }
         }
 

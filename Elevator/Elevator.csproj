@@ -52,7 +52,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Animation\AbstractAnimation.cs" />
+    <Compile Include="Animation\OpenCloseDoor.cs" />
+    <Compile Include="Automation\Door.cs" />
     <Compile Include="Automation\IPLC.cs" />
+    <Compile Include="Test\DiscreteTimer.cs" />
     <Compile Include="Test\DummyPLC.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -93,8 +97,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
