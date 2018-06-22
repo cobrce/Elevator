@@ -92,8 +92,10 @@ namespace Elevator.Test
                             break;
                         case states.waitopen:
                             if (_openTimer.IsTimeUp())
+                            {
                                 CloseDoor();
-                            state = states.close;
+                                state = states.close;
+                            }
                             break;
                         case states.close:
                             if (isDoorClosed())

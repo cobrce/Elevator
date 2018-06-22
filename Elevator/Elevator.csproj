@@ -53,6 +53,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Animation\AbstractAnimation.cs" />
+    <Compile Include="Animation\AbstractOpenCloseDoorAnimation.cs" />
     <Compile Include="Animation\OpenCloseDoor.cs" />
     <Compile Include="Automation\Door.cs" />
     <Compile Include="Automation\IPLC.cs" />

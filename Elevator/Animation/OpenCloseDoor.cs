@@ -7,16 +7,12 @@ using System.Windows.Shapes;
 
 namespace Elevator.Animation
 {
-    class OpenCloseDoor : AbstractAnimation
+    class OpenCloseDoor : AbstractOpenCloseDoorAnimation
     {
-        double _min, _max, _step;
-
-        public OpenCloseDoor(double min, double max, double step)
+        public OpenCloseDoor(double min, double max, double step) : base(min, max, step)
         {
-            _min = min;
-            _max = max;
-            _step = step;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -31,27 +27,11 @@ namespace Elevator.Animation
                 {
                     shape.Width += value;
                     double left = Canvas.GetLeft(shape);
-                    left -= value / 2;
+                    left -= value / 2.0;
+                    Canvas.SetLeft(shape,left);
                 }
             }
         }
-        public bool isOpen(Shape shape)
-        {
-            return (bool)Invoke(shape, isOpen_p);
-        }
-        private object isOpen_p(Shape shape)
-        {
-            return shape.Width == _max;
-        }
-
-        public bool isClosed(Shape shape)
-        {
-            return (bool)Invoke(shape, isClosed_p);
-        }
-
-        private object isClosed_p(Shape shape)
-        {
-            return shape.Width == _min;
-        }
+        
     }
 }

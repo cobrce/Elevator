@@ -25,13 +25,13 @@ namespace Elevator
         DummyPLC _plc;
         private IO _io;
         IAnimation _moveUpDown;
-        IAnimation _doorsOpenClose;
+        AbstractOpenCloseDoorAnimation _doorsOpenClose;
 
-        Shape[] _doorsShapes;
+        Shape[] _openDoorsShapes;
         public MainWindow()
         {
             InitializeComponent();
-            _doorsShapes = new Shape[] { door0, door1, door2 };
+            _openDoorsShapes = new Shape[] { opendoor0, opendoor1, opendoor2 };
 
 
             InitializeAutomation();
@@ -65,26 +65,40 @@ namespace Elevator
 
         private void SetEngineEventHandlers(Notifier engineUp, Notifier engineDown, Tuple<Notifier, Notifier>[] openCloseDoorNotifiers)
         {
-            if (openCloseDoorNotifiers.Length != _doorsShapes.Length)
-                throw new ArgumentOutOfRangeException($"The count of openCloseDoorNotifiers should be {_doorsShapes.Length} (equal to the number of doors)");
+            if (openCloseDoorNotifiers.Length != _openDoorsShapes.Length)
+                throw new ArgumentOutOfRangeException($"The count of openCloseDoorNotifiers should be {_openDoorsShapes.Length} (equal to the number of doors)");
 
             engineUp.LevelHigh += EngineUp_LevelHigh;
             engineDown.LevelHigh += EngineDown_LevelHigh;
 
             for (int i = 0; i < openCloseDoorNotifiers.Length; i++)
             {
-                openCloseDoorNotifiers[i].Item1.LevelHigh += (s, e) =>
-                 {
-                     DoorOpenClose(i, 1);
-                 };
-
-                openCloseDoorNotifiers[i].Item1.LevelHigh += (s, e) =>
-                {
-                    DoorOpenClose(i, 0);
-                };
+                DoorOpenCloseWrapper wrapper = new DoorOpenCloseWrapper(i, DoorOpenClose);
+                openCloseDoorNotifiers[i].Item1.LevelHigh += wrapper.Open;
+                openCloseDoorNotifiers[i].Item2.LevelHigh += wrapper.Close;
             }
         }
 
+        class DoorOpenCloseWrapper
+        {
+            private int _level;
+            private Action<int, int> _doorOpenClosedMethod;
+
+            public DoorOpenCloseWrapper(int level, Action<int, int> doorOpenCloseMethod)
+            {
+                _level = level;
+                _doorOpenClosedMethod = doorOpenCloseMethod;
+            }
+            public void Open(object sender, EventArgs args)
+            {
+                _doorOpenClosedMethod(_level, 1);
+
+            }
+            public void Close(object sender, EventArgs args)
+            {
+                _doorOpenClosedMethod(_level, 0);
+            }
+        }
 
         private void EngineDown_LevelHigh(object sender, EventArgs e)
         {
@@ -114,14 +128,16 @@ namespace Elevator
         /// <param name="open">1 open, 0 close</param>
         private void DoorOpenClose(int level, int open)
         {
-            _doorsOpenClose.Animate(_doorsShapes[level], open);
+            _doorsOpenClose.Animate(_openDoorsShapes[level], open);
+            _io.SetDoorOpenSensor(level, _doorsOpenClose.isOpen(_openDoorsShapes[level]));
+            _io.SetDoorClosesSensor(level, _doorsOpenClose.isClosed(_openDoorsShapes[level]));
         }
 
         private void ElevatorMoved()
         {
             double top = GetMiddlePosition(position);
-            for (int i = 0; i < _doorsShapes.Length; i++)
-                _io.SetDoorPositionSensor(i, ComparePositionToDoor(top, _doorsShapes[i]));
+            for (int i = 0; i < _openDoorsShapes.Length; i++)
+                _io.SetDoorPositionSensor(i, ComparePositionToDoor(top, _openDoorsShapes[i]));
         }
 
         private bool ComparePositionToDoor(double top, Shape door, double tolerance = 2)

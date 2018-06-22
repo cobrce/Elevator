@@ -93,5 +93,13 @@ namespace Elevator.Automation
         {
             WriteOnDigitalInput(_ioContext.Doors[level].PositionSensor, sensorState ? 1 : 0);
         }
+        internal void SetDoorOpenSensor(int level, bool sensorState)
+        {
+            WriteOnDigitalInput(_ioContext.Doors[level].DoorOpenSensor, sensorState ? 1 : 0);
+        }
+        internal void SetDoorClosesSensor(int level, bool sensorState)
+        {
+            WriteOnDigitalInput(_ioContext.Doors[level].DoorClosedSensor, sensorState ? 1 : 0);
+        }
     }
 }
