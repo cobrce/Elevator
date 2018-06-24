@@ -3,38 +3,35 @@ using System.Windows.Shapes;
 
 namespace Elevator.Automation
 {
-    abstract class AbstractNotifier : INotifier
+    public abstract class AbstractNotifier : INotifier
     {
-        protected int _plcIoPoint;
         public event EventHandler LevelHigh;
         public event EventHandler LevelLow;
         public event EventHandler OnEdge;
 
-        virtual public int PlcIoPoint { get { return _plcIoPoint; } }
+        virtual public int PlcIoPoint { get; set; }
 
         protected int? _state;
-        public int? State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                if (value > 0)
-                    LevelHigh?.Invoke(this, null);
-                else
-                    LevelLow?.Invoke(this, null);
-                if (value != State)
-                    OnEdge?.Invoke(this, new StateEventArgs(value));
 
-                _state = value;
-            }
+        public int? GetState()
+        {
+            return _state;
+        }
+        public void SetState(IO sender, int? value)
+        {
+            if (value > 0)
+                LevelHigh?.Invoke(sender, null);
+            else
+                LevelLow?.Invoke(sender, null);
+            if (value != GetState())
+                OnEdge?.Invoke(sender, new StateEventArgs(value));
+
+            _state = value;
         }
 
         public AbstractNotifier(int plcIoPoint)
         {
-            _plcIoPoint = plcIoPoint;
+            PlcIoPoint = plcIoPoint;
         }
     }
 }

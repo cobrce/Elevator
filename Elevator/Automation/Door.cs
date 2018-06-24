@@ -5,14 +5,46 @@ using System.Text;
 
 namespace Elevator.Automation
 {
-    struct Door
+    public class Door
     {
-        public int LevelButton;
-        public int OpenDoor;
-        public int DoorOpenSensor;
-        public int CloseDoor;
-        public int DoorClosedSensor;
-        public int PositionSensor;
+        public int LevelButton { get; set; }
+
+        private int _openDoor;
+        public int OpenDoor
+        {
+            get
+            {
+                return _openDoor;
+            }
+            set
+            {
+                _openDoor = value;
+                OpenDoorNotifier.PlcIoPoint = value;
+            }
+        }
+
+        public int DoorOpenSensor { get; set; }
+
+        private int _closeDoor;
+        public int CloseDoor
+        {
+            get
+            {
+                return _closeDoor;
+            }
+            set
+            {
+                _closeDoor = value;
+                CloseDoorNotifier.PlcIoPoint = value;
+            }
+        }
+        public int DoorClosedSensor { get; set; }
+        public int PositionSensor { get; set; }
+
+        public static List<Door> EmptyDoors(int count)
+        {
+            return new Door[count].ToList();
+        }
 
         /// <summary>
         /// 
@@ -22,7 +54,7 @@ namespace Elevator.Automation
         /// <param name="closeDoor">The PLC output to close the door</param>
         /// <param name="doorClosedSensor">The PLC input telling when the door is fully closed</param>
         /// <param name="positionSensor">The PLC input telling that the elevator arrived to this level</param>
-        public Door(int levelButton, int openDoor, int doorOpenSensor, int closeDoor, int doorClosedSensor, int positionSensor)
+        public Door(int openDoor, int closeDoor, int levelButton, int doorOpenSensor, int doorClosedSensor, int positionSensor)
         {
             LevelButton = levelButton;
             OpenDoor = openDoor;
@@ -31,5 +63,8 @@ namespace Elevator.Automation
             PositionSensor = positionSensor;
             DoorClosedSensor = doorClosedSensor;
         }
+
+        public Notifier OpenDoorNotifier { get; set; } = new Notifier(0);
+        public Notifier CloseDoorNotifier { get; set; } = new Notifier(0);
     }
 }

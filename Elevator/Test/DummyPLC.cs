@@ -1,4 +1,5 @@
 ﻿using Elevator.Automation;
+using Elevator.Plugins;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,24 +10,44 @@ namespace Elevator.Test
 {
     class DummyPLC : IPLC
     {
-        private int _numberOfDoors;
+        Notifier _engineUpNotifier;
+        public Notifier EngineUpNotifier
+        {
+            get
+            {
+                return (_engineUpNotifier != null) ? _engineUpNotifier : _engineUpNotifier = new Notifier(_upEngine = _io++);
+            }
+        }
+
+        Notifier _engineDownNotifier;
+        public Notifier EngineDownNotifier
+        {
+            get
+            {
+                return (_engineDownNotifier != null) ? _engineDownNotifier : _engineDownNotifier = new Notifier(_downEngine = _io++);
+            }
+        }
 
         enum iopoint
         {
-            levelButton,
             openDoor,
-            doorOpenSensor,
             closeDoor,
+            levelButton,
+            doorOpenSensor,
             doorClosedSensor,
             positionSensor,
         };
 
         int _io = 0;
+        int _numberOfDoors;
         int _nPointsPerDoor = 6;
+        bool _running = false;
+        bool _connected = false;
 
         private int _msTimeout;
-        Dictionary<int, int> _ioPointDoorIndexDictionary = new Dictionary<int, int>();
         int _upEngine, _downEngine;
+
+
         BackgroundWorker backgroundWorker = new BackgroundWorker();
 
         // current/previous values of doors inputs
@@ -39,12 +60,11 @@ namespace Elevator.Test
         // a queue of pressed buttons
         Queue<int> pressedButtons = new Queue<int>();
 
-        // used (not yet) to count time
         uint _timer = 0;
         public uint Timer { get { return _timer; } }
         DiscreteTimer _openTimer;
 
-        public DummyPLC(int numberOfDoors, int msTimeout = 20, uint msWaitOpen = 1000)
+        public DummyPLC(int numberOfDoors = 3, int msTimeout = 20, uint msWaitOpen = 1000)
         {
             _numberOfDoors = numberOfDoors;
             _msTimeout = msTimeout;
@@ -74,36 +94,37 @@ namespace Elevator.Test
             states state = states.wait;
             while (true)
             {
-                lock (_ioDoors)
-                {
-                    for (int i = 0; i < _ioDoors.Length; i++)
-                        CheckButtonPress(i);
-
-                    switch (state)
+                if (_running)
+                    lock (_ioDoors)
                     {
-                        case states.wait:
-                        case states.move:
-                            ReadElevatorPosition();
-                            state = MoveElevator();
-                            break;
-                        case states.open:
-                            if (isDoorOpen())
-                                state = states.waitopen;
-                            break;
-                        case states.waitopen:
-                            if (_openTimer.IsTimeUp())
-                            {
-                                CloseDoor();
-                                state = states.close;
-                            }
-                            break;
-                        case states.close:
-                            if (isDoorClosed())
-                                state = states.wait;
-                            break;
+                        for (int i = 0; i < _ioDoors.Length; i++)
+                            CheckButtonPress(i);
+
+                        switch (state)
+                        {
+                            case states.wait:
+                            case states.move:
+                                ReadElevatorPosition();
+                                state = MoveElevator();
+                                break;
+                            case states.open:
+                                if (isDoorOpen())
+                                    state = states.waitopen;
+                                break;
+                            case states.waitopen:
+                                if (_openTimer.IsTimeUp())
+                                {
+                                    CloseDoor();
+                                    state = states.close;
+                                }
+                                break;
+                            case states.close:
+                                if (isDoorClosed())
+                                    state = states.wait;
+                                break;
+                        }
+                        CopyState();
                     }
-                    CopyState();
-                }
                 Thread.Sleep(_msTimeout);
                 _timer += (uint)_msTimeout;
             }
@@ -191,7 +212,6 @@ namespace Elevator.Test
         }
 
         Door[] _doors;
-        private int _firstdoorIO;
 
         public Door[] Doors
         {
@@ -204,7 +224,6 @@ namespace Elevator.Test
         private Door[] GenerateDoors()
         {
             _doors = new Door[_numberOfDoors];
-            _firstdoorIO = _io;
             for (int i = 0; i < _numberOfDoors; i++)
                 _doors[i] = Generatedoor(i, _io++, _io++, _io++, _io++, _io++, _io++);
             return _doors;
@@ -213,62 +232,19 @@ namespace Elevator.Test
         private Door Generatedoor(int i, params int[] points)
         {
             _nPointsPerDoor = points.Length;
-
-            // associate door index to it's IO points for future use
-            for (int j = 0; j < points.Length; j++)
-                _ioPointDoorIndexDictionary[points[j]] = i;
-
             return new Door(points[0], points[1], points[2], points[3], points[4], points[5]);
-        }
-
-        Tuple<Notifier, Notifier> _engines;
-        public Tuple<Notifier, Notifier> Engines
-        {
-            get
-            {
-                return (_engines != null) ? _engines : _engines = GenerateEngines();
-            }
-        }
-
-        Tuple<Notifier, Notifier> GenerateEngines()
-        {
-            return new Tuple<Notifier, Notifier>(
-                new Notifier(_upEngine = _io++),
-                new Notifier(_downEngine = _io++)
-                );
-        }
-
-        Tuple<Notifier, Notifier>[] _openCloseDoor;
-        public Tuple<Notifier, Notifier>[] OpenCloseDoor
-        {
-            get
-            {
-                return (_openCloseDoor != null) ? _openCloseDoor : _openCloseDoor = GenerateOpenCloseDoor();
-            }
-        }
-
-        private Tuple<Notifier, Notifier>[] GenerateOpenCloseDoor()
-        {
-            List<Tuple<Notifier, Notifier>> notifiers = new List<Tuple<Notifier, Notifier>>();
-
-            for (int i = 0; i < _numberOfDoors; i++)
-                notifiers.Add(
-                    new Tuple<Notifier, Notifier>(
-                        new Notifier(Doors[i].OpenDoor),
-                        new Notifier(Doors[i].CloseDoor)
-                    )
-                );
-
-            return notifiers.ToArray();
         }
 
         public int? Read(int output)
         {
+            if (!_connected) return null;
 
-            if (output == _upEngine)
+            if (output == EngineUpNotifier.PlcIoPoint)
                 return _engine[0];
-            else if (output == _downEngine)
+
+            else if (output == EngineDownNotifier.PlcIoPoint)
                 return _engine[1];
+
             else
                 return ReadIoDoor(output);
 
@@ -276,20 +252,85 @@ namespace Elevator.Test
 
         private int? ReadIoDoor(int output)
         {
-            if (_ioPointDoorIndexDictionary.TryGetValue(output, out int index))
-                return _ioDoors[index][RelativeIndex(output)];
+            if (GetOutputIndex(output, out int i, out int j))
+                return _ioDoors[i][j];
             return null;
+
+        }
+
+        private bool GetOutputIndex(int outputIndex, out int doorindex, out int point)
+        {
+            doorindex = 0;
+            point = 0;
+
+            for (int i = 0; i < Doors.Length; i++)
+            {
+                Door door = Doors[i];
+                doorindex = i;
+                if (outputIndex == door.OpenDoor)
+                {
+                    point = 0;
+                    return true;
+                }
+
+                else if (outputIndex == door.CloseDoor)
+                {
+                    point = 1;
+                    return true;
+                }
+
+                else if (outputIndex == door.LevelButton)
+                {
+                    point = 2;
+                    return true;
+                }
+                else if (outputIndex == door.DoorOpenSensor)
+                {
+                    point = 3;
+                    return true;
+                }
+                else if (outputIndex == door.DoorClosedSensor)
+                {
+                    point = 4;
+                    return true;
+                }
+                else if (outputIndex == door.PositionSensor)
+                {
+                    point = 5;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void Write(int input, int state)
         {
-            if (_ioPointDoorIndexDictionary.TryGetValue(input, out int index))
-                _ioDoors[index][RelativeIndex(input)] = state;
+            if (_connected)
+                if (GetOutputIndex(input, out int i, out int j))
+                    _ioDoors[i][j] = state;
         }
 
-        private int RelativeIndex(int input)
+        public bool Connect()
         {
-            return (input - _firstdoorIO) % _nPointsPerDoor;
+            return _connected = true;
         }
+
+        public void Disconnect()
+        {
+            _connected = false;
+        }
+
+        public void Run()
+        {
+            _running = true;
+        }
+
+        public void Stop()
+        {
+            _running = false;
+        }
+
+        public string Name { get; set; } = "Dummy PLC";
+
     }
 }

@@ -5,16 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Elevator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="263.2">
+        Title="Elevator Simulator" Height="650" Width="316"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Height="410" VerticalAlignment="Top" Margin="0,10,0,0" HorizontalAlignment="Left" Width="257" >
-            <Canvas Name="svg8" Width="152" Height="302">
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" HorizontalAlignment="Left" Margin="0,10,0,0" >
+            <Canvas Name="svg8" Width="147" Height="290" VerticalAlignment="Top">
                 <Canvas.RenderTransform>
                     <TranslateTransform X="0" Y="0"/>
                 </Canvas.RenderTransform>
                 <Canvas.Resources/>
-                <!--Unknown tag: sodipodi:namedview-->
-                <!--Unknown tag: metadata-->
                 <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="position" Fill="Green" StrokeThickness="0.26010618" Height="30" Stretch="Fill" Canvas.Top="237" Canvas.Left="10">
                     <Path.Data>
                         <PathGeometry Figures="M -1.8125725 197.74409 H 21.176208 v 12.2028 H -1.8125725 Z m 32.1736345 6.37215 -16.824154 12.37417 v -25.21522 z" FillRule="NonZero"/>

@@ -2,9 +2,11 @@
 
 namespace Elevator.Automation
 {
-    interface INotifier
+    public interface INotifier
     {
         int PlcIoPoint { get; }
-        int? State { get; set; }
+
+        int? GetState();
+        void SetState(IO sender, int? value);
     }
 }

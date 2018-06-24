@@ -5,26 +5,21 @@ using System.Text;
 
 namespace Elevator.Automation
 {
-    class IOContext
+    public class IOContext
     {
-        Door[] _doors = new Door[3];
-        public Door[] Doors { get { return _doors; } }
+        public List<Door> Doors { get; set; } = new List<Door>();
 
         Notifier _engineUP, _engineDown;
-        Tuple<Notifier, Notifier>[] _openCloseDoor;
         public Notifier EngineUP { get { return _engineUP; } }
         public Notifier EngineDown { get { return _engineDown; } }
-        public Tuple<Notifier, Notifier>[] OpenCloseDoor { get { return _openCloseDoor; } }
-
+        
         public IOContext(
             ICollection<Door> doors,
             Notifier engineUp,
-            Notifier engineDown,
-            Tuple<Notifier, Notifier>[] openCloseDoor
+            Notifier engineDown
             )
         {
-            CopyDoors(doors);
-            _openCloseDoor = openCloseDoor;
+            Doors.AddRange(doors);
             _engineUP = engineUp;
             _engineDown = engineDown;
         }
@@ -33,11 +28,6 @@ namespace Elevator.Automation
         {
             _engineUP = engineUpDown.Item1;
             _engineDown = engineUpDown.Item2;
-        }
-
-        private void CopyDoors(ICollection<Door> doors)
-        {
-            _doors = doors.ToArray();
         }
     }
 

@@ -1,25 +1,24 @@
-﻿#define safe
+﻿//#define safe
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace Elevator.Automation
 {
     // this class is responsible to read/write from/to PLC outputs/inputs
-    class IO
+    public class IO
     {
         int _msTimeout;
-        IOContext _ioContext { get; set; }
-        IPLC _plc;
+        public IOContext IOContext { get; }
 
+        IPLC PLC { get; }
+        
         public IO(IPLC plc, IOContext ioContext, int msTimeout = 20) : this()
         {
             _msTimeout = msTimeout;
-            _ioContext = ioContext;
-            _plc = plc;
+            IOContext = ioContext;
+            PLC = plc;
         }
 
         BackgroundWorker _backgroundWorker = new BackgroundWorker();
@@ -35,11 +34,14 @@ namespace Elevator.Automation
         {
             while (_running)
             {
-                ReadState(_ioContext.EngineUP);
-                ReadState(_ioContext.EngineDown);
+                ReadState(IOContext.EngineUP);
+                ReadState(IOContext.EngineDown);
 
-                foreach (var notifier in EnumerateNotifiers(_ioContext.OpenCloseDoor))
-                    ReadState(notifier);
+                foreach (Door door in IOContext.Doors)
+                {
+                    ReadState(door.CloseDoorNotifier);
+                    ReadState(door.OpenDoorNotifier);
+                }
 
                 Thread.Sleep(_msTimeout);
             }
@@ -56,8 +58,8 @@ namespace Elevator.Automation
 
         internal void PressButton(int level)
         {
-            if (level < _ioContext.Doors.Length)
-                PulseOnDigitalInput(_ioContext.Doors[level].LevelButton);
+            if (level < IOContext.Doors.Count)
+                PulseOnDigitalInput(IOContext.Doors[level].LevelButton);
         }
 
         private void PulseOnDigitalInput(int input)
@@ -74,32 +76,16 @@ namespace Elevator.Automation
 #endif
         }
 
-        private void WriteOnDigitalInput(int input, int state)
-        {
-            _plc.Write(input, state);
-        }
-
-        private int? ReadBoolAsInt(int output)
-        {
-            return _plc.Read(output);
-        }
-
-        private void ReadState(Notifier notifier)
-        {
-            notifier.State = ReadBoolAsInt(notifier.PlcIoPoint);
-        }
-
-        internal void SetDoorPositionSensor(int level, bool sensorState)
-        {
-            WriteOnDigitalInput(_ioContext.Doors[level].PositionSensor, sensorState ? 1 : 0);
-        }
-        internal void SetDoorOpenSensor(int level, bool sensorState)
-        {
-            WriteOnDigitalInput(_ioContext.Doors[level].DoorOpenSensor, sensorState ? 1 : 0);
-        }
-        internal void SetDoorClosesSensor(int level, bool sensorState)
-        {
-            WriteOnDigitalInput(_ioContext.Doors[level].DoorClosedSensor, sensorState ? 1 : 0);
-        }
+        private void WriteOnDigitalInput(int input, int state) => PLC.Write(input, state);
+        private int? ReadBoolAsInt(int output) => PLC.Read(output);
+        private void ReadState(Notifier notifier) => notifier.SetState(this, ReadBoolAsInt(notifier.PlcIoPoint));
+        public void SetDoorPositionSensor(int level, bool sensorState) => WriteOnDigitalInput(IOContext.Doors[level].PositionSensor, sensorState ? 1 : 0);
+        public void SetDoorOpenSensor(int level, bool sensorState) => WriteOnDigitalInput(IOContext.Doors[level].DoorOpenSensor, sensorState ? 1 : 0);
+        public void SetDoorClosesSensor(int level, bool sensorState) => WriteOnDigitalInput(IOContext.Doors[level].DoorClosedSensor, sensorState ? 1 : 0);
+        public bool Connect() => PLC.Connect();
+        public void Disconnect() => PLC.Disconnect();
+        public void Run() => PLC.Run();
+        public void Stop() => PLC.Stop();
+        public override string ToString() => PLC.Name;
     }
 }

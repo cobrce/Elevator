@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 
 namespace Elevator.Automation
 {
-    internal class Notifier : AbstractNotifier
+    public class Notifier : AbstractNotifier
     {
         public Notifier(int plcIoPoint) : base(plcIoPoint)
         {
