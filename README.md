@@ -8,8 +8,8 @@ Example of automation plugin in elevator/Test/
 ## How to make your own plugin
 * Make an implementation of IPLC that handles the logic or the communication with a plc/simulator
 * Make an implementation of Plugins.IPlugin (or Plugins.AbstractPlugin)
+* Copy the compiled assembly to "Plugins" subdirectory
 
 ## Todo
-* Add the possiblity to load external Plugins assemblies
 * Write a plugin for step7 plcsim
 * Write a save/load IO configuration

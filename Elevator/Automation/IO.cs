@@ -13,7 +13,7 @@ namespace Elevator.Automation
         public IOContext IOContext { get; }
 
         IPLC PLC { get; }
-        
+
         public IO(IPLC plc, IOContext ioContext, int msTimeout = 20) : this()
         {
             _msTimeout = msTimeout;
@@ -46,16 +46,7 @@ namespace Elevator.Automation
                 Thread.Sleep(_msTimeout);
             }
         }
-
-        private IEnumerable<Notifier> EnumerateNotifiers(Tuple<Notifier, Notifier>[] notifiersTupleArray)
-        {
-            foreach (var tpl in notifiersTupleArray)
-            {
-                yield return tpl.Item1;
-                yield return tpl.Item2;
-            }
-        }
-
+        
         internal void PressButton(int level)
         {
             if (level < IOContext.Doors.Count)
@@ -68,9 +59,9 @@ namespace Elevator.Automation
             new Thread(() =>
             {
 #endif
-            WriteOnDigitalInput(input, 1);
-            Thread.Sleep(100);
-            WriteOnDigitalInput(input, 0);
+                WriteOnDigitalInput(input, 1);
+                Thread.Sleep(100);
+                WriteOnDigitalInput(input, 0);
 #if !safe
             }).Start();
 #endif

@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator", "Elevator\Elevator.csproj", "{2923D546-DAE8-4869-BDC4-2DEEA7F4BB19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyPlcPlugin", "DummyPlcPlugin\DummyPlcPlugin.csproj", "{79C75C22-6483-4E8A-8BBA-DD878F7B8766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2923D546-DAE8-4869-BDC4-2DEEA7F4BB19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2923D546-DAE8-4869-BDC4-2DEEA7F4BB19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2923D546-DAE8-4869-BDC4-2DEEA7F4BB19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

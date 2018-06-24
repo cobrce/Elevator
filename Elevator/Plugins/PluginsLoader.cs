@@ -1,6 +1,7 @@
 ﻿using Elevator.Automation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,11 +10,38 @@ namespace Elevator.Plugins
 {
     public static class PluginsLoader
     {
-        static internal List<IO> PluginsList = new List<IO>(ListPlugins());
+        private const string pluginsDir = "Plugins";
 
-        internal static List<IO> ListPlugins()
+        static string absPluginsDir =
+            Path.Combine(
+                Path.GetDirectoryName(typeof(PluginsLoader).Assembly.Location),
+                pluginsDir
+            );
+
+
+        static internal List<IO> PluginsList;
+
+        static PluginsLoader()
         {
-            return ListPlugins(typeof(PluginsLoader).Assembly);
+            PluginsList = new List<IO>();
+            ListPlugins();
+        }
+
+        private static void ListPlugins()
+        {
+            //PluginsList.AddRange(ListPlugins(typeof(PluginsLoader).Assembly));
+            try
+            {
+                foreach (string fileName in Directory.EnumerateFiles(absPluginsDir, "*.*", SearchOption.TopDirectoryOnly))
+                {
+                    try
+                    {
+                        RegisterPlugins(Assembly.LoadFile(fileName));
+                    }
+                    catch { }
+                }
+            }
+            catch { }
         }
 
         internal static List<IO> ListPlugins(Assembly asm)
@@ -28,7 +56,7 @@ namespace Elevator.Plugins
 
         // these two methods could be invoked by an external assembly to register a plugin, this should be done before invoking
         // the mainwindow
-        public static void RegisterPlugin(Assembly asm)
+        public static void RegisterPlugins(Assembly asm)
         {
             PluginsList.AddRange(ListPlugins(asm));
         }

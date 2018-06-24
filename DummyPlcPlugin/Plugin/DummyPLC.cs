@@ -1,10 +1,7 @@
 ﻿using Elevator.Automation;
-using Elevator.Plugins;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows.Shapes;
 
 namespace Elevator.Test
 {

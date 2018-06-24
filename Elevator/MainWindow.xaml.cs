@@ -1,19 +1,10 @@
 ﻿using Elevator.Animation;
 using Elevator.Automation;
 using Elevator.Plugins;
-using Elevator.Test;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Elevator
@@ -41,29 +32,10 @@ namespace Elevator
             SelectPLC();
 
         }
-        /// <summary>
-        /// Add implementations of different IPLC
-        /// </summary>
-        /// 
+
         private void InitializeAutomation()
         {
-            /// the Doors and Notifiers don't need to be generate by the IPLC, normally the configuration is set 
-            /// in the remote device/simulator, but it happens that DummyPLC is simulating a remote device (doing
-            /// the communication and the logic)
-            /// 
-            IOList.AddRange(PluginsLoader.ListPlugins());// PlcIO(dummy, dummy.Doors, dummy.EngineUpNotifier, dummy.EngineDownNotifier));
-
-            /// this is a template to add your own IPLC to the list of PLCs
-            /// the IO points of the Doors and Notifiers are entered by the user in the GUI
-            ///             
-            //IOList.Add(
-            //    PlcIO(
-            //        new MyPLC(),
-            //        Door.EmptyDoors(3),
-            //        new Notifier(0), 
-            //        new Notifier(0)
-            //    )
-            //);
+            IOList.AddRange(PluginsLoader.PluginsList);
         }
 
         private void SelectPLC()

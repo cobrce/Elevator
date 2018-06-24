@@ -1,9 +1,5 @@
 ﻿using Elevator.Automation;
 using Elevator.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Elevator.Test
 {

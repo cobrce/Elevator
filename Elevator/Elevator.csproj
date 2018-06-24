@@ -63,9 +63,6 @@
       <DependentUpon>PLCSelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\PluginsLoader.cs" />
-    <Compile Include="Test\DiscreteTimer.cs" />
-    <Compile Include="Test\DummyPLC.cs" />
-    <Compile Include="Test\DummyPlugin.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
