@@ -1,7 +1,7 @@
 # Elevator
 A simulator of an elevator to be automated by a PLC (or PLC simulator)
 
-Example of automation plugin in elevator/Test/
+**DummyPlcPlugin** is an example of automation plugin
 
 ![alt text](https://raw.githubusercontent.com/cobrce/Elevator/master/Elevator/2018-06-24_20-00-30.gif)
 
