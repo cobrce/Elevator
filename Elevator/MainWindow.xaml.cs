@@ -1,8 +1,6 @@
 ﻿using Elevator.Animation;
 using Elevator.Automation;
-using Elevator.Plugins;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -14,8 +12,6 @@ namespace Elevator
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<IO> IOList = new List<IO>();
-
         private IO _selectedIO;
         IAnimation _moveUpDown;
         AbstractOpenCloseDoorAnimation _doorsOpenClose;
@@ -24,26 +20,21 @@ namespace Elevator
         public MainWindow()
         {
             InitializeComponent();
-            _openDoorsShapes = new Shape[] { opendoor0, opendoor1, opendoor2 };
-
-            InitializeAutomation();
+            InitShapes();
             InitAnimations();
-
             SelectPLC();
-
         }
 
-        private void InitializeAutomation()
+        private void InitShapes()
         {
-            IOList.AddRange(PluginsLoader.PluginsList);
+            _openDoorsShapes = new Shape[] { opendoor0, opendoor1, opendoor2 };
         }
 
         private void SelectPLC()
         {
-            PLCSelect select = new PLCSelect(_openDoorsShapes.Length, IOList.ToArray());
-            select.ShowDialog();
+            PLCSelect select = new PLCSelect();
 
-            if (select.SelectedIO != null)
+            if (select.ShowDialog() == true && select.SelectedIO != null)
                 SelectIO(select.SelectedIO);
             else
                 Close();
@@ -70,8 +61,13 @@ namespace Elevator
 
         private void RunIO()
         {
-            _selectedIO.Connect();
-            _selectedIO.Run();
+            if (_selectedIO.Connect())
+                _selectedIO.Run();
+            else
+            {
+                MessageBox.Show("Couldn't connect, quitting");
+                Close();
+            }
         }
 
 

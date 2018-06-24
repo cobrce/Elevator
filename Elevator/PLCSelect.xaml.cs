@@ -1,16 +1,7 @@
 ﻿using Elevator.Automation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Elevator.Plugins;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Elevator
 {
@@ -19,25 +10,16 @@ namespace Elevator
     /// </summary>
     public partial class PLCSelect : Window
     {
-        private IO[] _ioArray;
-        private int _numberOfDoors;
-
-        private PLCSelect()
+        public PLCSelect()
         {
             InitializeComponent();
-        }
-
-        public PLCSelect(int numberOfDoors, IO[] ioarray) : this()
-        {
-            _ioArray = ioarray;
-            _numberOfDoors = numberOfDoors;
         }
 
         public IO SelectedIO { get; private set; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            comboPLC.ItemsSource = _ioArray;
+            comboPLC.ItemsSource = PluginsLoader.PluginsList;
         }
 
         private void comboPLC_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -60,6 +42,7 @@ namespace Elevator
             if (comboPLC.SelectedItem is IO io)
             {
                 SelectedIO = io;
+                DialogResult = true;
                 Close();
             }
         }

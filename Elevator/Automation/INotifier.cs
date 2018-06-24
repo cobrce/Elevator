@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Elevator.Automation
+﻿namespace Elevator.Automation
 {
     public interface INotifier
     {
