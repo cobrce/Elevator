@@ -12,4 +12,3 @@ A simulator of an elevator to be automated by a PLC (or PLC simulator)
 
 ## Todo
 * Write a plugin for step7 plcsim
-* Write a save/load IO configuration
