@@ -2,6 +2,7 @@
 
 namespace Elevator.Automation
 {
+    [Serializable]
     public abstract class AbstractNotifier : INotifier
     {
         public event EventHandler LevelHigh;
@@ -32,5 +33,6 @@ namespace Elevator.Automation
         {
             PlcIoPoint = plcIoPoint;
         }
+
     }
 }

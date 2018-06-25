@@ -44,6 +44,10 @@ namespace Elevator.Automation
             return new Door[count].ToList();
         }
 
+        public Door()
+        {
+
+        }
         /// <summary>
         /// 
         /// <param name="levelButton">The PLC input notified when button is pressed</param>

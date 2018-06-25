@@ -9,7 +9,5 @@
         void Run();
         void Stop();
         string Name { get; set; }
-        Notifier EngineUpNotifier { get; }
-        Notifier EngineDownNotifier { get; }
     }
 }

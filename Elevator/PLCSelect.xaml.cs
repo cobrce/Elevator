@@ -1,7 +1,10 @@
 ﻿using Elevator.Automation;
 using Elevator.Plugins;
+using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Elevator
 {
@@ -26,7 +29,7 @@ namespace Elevator
         {
             if (comboPLC.SelectedItem is IO io)
             {
-                btnSelect.IsEnabled = true;
+                btnSelect.IsEnabled = btnLoad.IsEnabled = btnSave.IsEnabled = true;
                 DataContext = io;
                 doorsDataGrid.ItemsSource = io.IOContext.Doors;
             }
@@ -44,6 +47,62 @@ namespace Elevator
                 SelectedIO = io;
                 DialogResult = true;
                 Close();
+            }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (comboPLC.SelectedItem is IO io)
+                {
+                    if (SaverLoader.LoadCopyTo(io.IOContext))
+                    {
+                        UpdateGUI();
+                        MessageBox.Show(this, "Loaded successfuly");
+                    }
+                    else
+                        MessageBox.Show(this, "Error loading");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message);
+            }
+        }
+
+        private void UpdateGUI()
+        {
+            foreach (object item in doorsDataGrid.ItemsSource)
+                if (doorsDataGrid.ItemContainerGenerator.ContainerFromItem(item) is DataGridRow row)
+                    UpdateBindingsExpressionTarget(row.BindingGroup.BindingExpressions);
+
+            UpdateTextBox(txtDown);
+            UpdateTextBox(txtUP);
+        }
+
+        private void UpdateTextBox(TextBox textbox)
+        {
+            textbox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
+
+        private void UpdateBindingsExpressionTarget(Collection<BindingExpressionBase> bindingExpressions)
+        {
+            foreach (var binding in bindingExpressions)
+                binding.UpdateTarget();
+            
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (comboPLC.SelectedItem is IO io)
+                    MessageBox.Show(this, SaverLoader.Save(io.IOContext) ? "Saved successfuly" : "Error saving");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message);
             }
         }
     }

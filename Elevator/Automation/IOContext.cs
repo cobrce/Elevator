@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Elevator.Automation
 {
     public class IOContext
     {
         public List<Door> Doors { get; set; } = new List<Door>();
+        public Notifier EngineUP { get; set; }
+        public Notifier EngineDown { get; set; }
 
-        Notifier _engineUP, _engineDown;
-        public Notifier EngineUP { get { return _engineUP; } }
-        public Notifier EngineDown { get { return _engineDown; } }
-        
+        public IOContext()
+        {
+
+        }
+
         public IOContext(
             ICollection<Door> doors,
             Notifier engineUp,
@@ -18,15 +22,9 @@ namespace Elevator.Automation
             )
         {
             Doors.AddRange(doors);
-            _engineUP = engineUp;
-            _engineDown = engineDown;
+            EngineUP = engineUp;
+            EngineDown = engineDown;
         }
 
-        private void CopyEngine(Tuple<Notifier, Notifier> engineUpDown)
-        {
-            _engineUP = engineUpDown.Item1;
-            _engineDown = engineUpDown.Item2;
-        }
     }
-
 }

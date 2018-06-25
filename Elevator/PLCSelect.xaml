@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Elevator"
         mc:Ignorable="d"
-        Title="PLCSelect" Height="230.488" Width="571.708"
+        Title="PLCSelect" Height="263.415" Width="571.708"
         Loaded="Window_Loaded"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -19,21 +19,23 @@
 
         <DataGrid CanUserAddRows="False"
                   LoadingRow="doorsDataGrid_LoadingRow"                  
-            x:Name="doorsDataGrid" Height="124" Margin="10,37,0,0" VerticalAlignment="Top" AutoGenerateColumns="False" HorizontalAlignment="Left" Width="546">
+                  x:Name="doorsDataGrid" Height="124" Margin="10,37,0,0" VerticalAlignment="Top" AutoGenerateColumns="False" HorizontalAlignment="Left" Width="546">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Out : Open" Binding="{Binding OpenDoor}"/>
-                <DataGridTextColumn Header="Out : Close" Binding="{Binding CloseDoor}"/>
-                <DataGridTextColumn Header="In : Button" Binding="{Binding LevelButton}"/>
-                <DataGridTextColumn Header="In : Open sensor" Binding="{Binding DoorOpenSensor}"/>
-                <DataGridTextColumn Header="In : Closed sensor" Binding="{Binding DoorClosedSensor}"/>
-                <DataGridTextColumn Header="In : Elevator sensor" Binding="{Binding PositionSensor}"/>
+                <DataGridTextColumn Header="Out : Open" Binding="{Binding OpenDoor,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Out : Close" Binding="{Binding CloseDoor,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Button" Binding="{Binding LevelButton,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Open sensor" Binding="{Binding DoorOpenSensor,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Closed sensor" Binding="{Binding DoorClosedSensor,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Elevator sensor" Binding="{Binding PositionSensor,Mode=TwoWay}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Label Content="Select PLC" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,6,0,0"/>
         <Label Content="Engine UP" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,166,0,0"/>
         <TextBox Text="{Binding IOContext.EngineUP.PlcIoPoint,Mode=TwoWay}" x:Name="txtUP" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Engine Down" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,167,0,0"/>
-        <TextBox Text="{Binding IOContext.EngineDown.PlcIoPoint,Mode=TwoWay}" x:Name="txtDown" HorizontalAlignment="Left" Height="23" Margin="307,170,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnSelect" IsEnabled="False" Content="Select" HorizontalAlignment="Left" Margin="464,170,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSelect_Click"/>
+        <TextBox Text="{Binding IOContext.EngineDown.PlcIoPoint,Mode=TwoWay}"  x:Name="txtDown" HorizontalAlignment="Left" Height="23" Margin="307,170,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnLoad" IsEnabled="False" Content="Load" HorizontalAlignment="Left" Margin="285,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnLoad_Click" />
+        <Button x:Name="btnSave" IsEnabled="False" Content="Save" HorizontalAlignment="Left" Margin="377,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSave_Click" />
+        <Button x:Name="btnSelect" IsEnabled="False" Content="Select" HorizontalAlignment="Left" Margin="469,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSelect_Click"/>
     </Grid>
 </Window>
