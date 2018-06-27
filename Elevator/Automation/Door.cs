@@ -39,9 +39,12 @@ namespace Elevator.Automation
         public int DoorClosedSensor { get; set; }
         public int PositionSensor { get; set; }
 
-        public static List<Door> EmptyDoors(int count)
+        public static List<Door> GenerateDoors(int count)
         {
-            return new Door[count].ToList();
+            List<Door> doors = new List<Door>();
+            for (int i = 0; i < count; i++)
+                doors.Add(new Door());
+            return doors;
         }
 
         public Door()

@@ -2,8 +2,8 @@
 {
     public interface IPLC
     {
-        int? Read(int output);
-        void Write(int input, int state);
+        int? Read(IPoint output);
+        void Write(IPoint input, int state);
         bool Connect();
         void Disconnect();
         void Run();

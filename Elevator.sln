@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator", "Elevator\Elevat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyPlcPlugin", "DummyPlcPlugin\DummyPlcPlugin.csproj", "{79C75C22-6483-4E8A-8BBA-DD878F7B8766}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Step7PlcsimPlugin", "Step7PlcsimPlugin\Step7PlcsimPlugin.csproj", "{3056CF8C-00E6-4958-AAA3-81F4A492721A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79C75C22-6483-4E8A-8BBA-DD878F7B8766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3056CF8C-00E6-4958-AAA3-81F4A492721A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3056CF8C-00E6-4958-AAA3-81F4A492721A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3056CF8C-00E6-4958-AAA3-81F4A492721A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3056CF8C-00E6-4958-AAA3-81F4A492721A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

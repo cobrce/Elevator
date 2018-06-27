@@ -2,7 +2,7 @@
 {
     public interface INotifier
     {
-        int PlcIoPoint { get; }
+        IPoint PlcIoPoint { get; }
 
         int? GetState();
         void SetState(IO sender, int? value);

@@ -232,7 +232,7 @@ namespace Elevator.Test
             return new Door(points[0], points[1], points[2], points[3], points[4], points[5]);
         }
 
-        public int? Read(int output)
+        public int? Read(IPoint output)
         {
             if (!_connected) return null;
 

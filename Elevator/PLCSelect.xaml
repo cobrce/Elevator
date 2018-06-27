@@ -34,8 +34,8 @@
         <TextBox Text="{Binding IOContext.EngineUP.PlcIoPoint,Mode=TwoWay}" x:Name="txtUP" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Engine Down" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,167,0,0"/>
         <TextBox Text="{Binding IOContext.EngineDown.PlcIoPoint,Mode=TwoWay}"  x:Name="txtDown" HorizontalAlignment="Left" Height="23" Margin="307,170,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnLoad" IsEnabled="False" Content="Load" HorizontalAlignment="Left" Margin="285,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnLoad_Click" />
-        <Button x:Name="btnSave" IsEnabled="False" Content="Save" HorizontalAlignment="Left" Margin="377,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSave_Click" />
+        <Button x:Name="btnLoad" IsEnabled="False" Content="Load" HorizontalAlignment="Left" Margin="10,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnLoad_Click" />
+        <Button x:Name="btnSave" IsEnabled="False" Content="Save" HorizontalAlignment="Left" Margin="102,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSave_Click" />
         <Button x:Name="btnSelect" IsEnabled="False" Content="Select" HorizontalAlignment="Left" Margin="469,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSelect_Click"/>
     </Grid>
 </Window>

@@ -9,7 +9,7 @@ namespace Elevator.Automation
         public event EventHandler LevelLow;
         public event EventHandler OnEdge;
 
-        virtual public int PlcIoPoint { get; set; }
+        virtual public IPoint PlcIoPoint { get; set; }
 
         protected int? _state;
 
@@ -29,7 +29,7 @@ namespace Elevator.Automation
             _state = value;
         }
 
-        public AbstractNotifier(int plcIoPoint)
+        public AbstractNotifier(IPoint plcIoPoint)
         {
             PlcIoPoint = plcIoPoint;
         }
