@@ -13,6 +13,7 @@ namespace Elevator.Automation.IOPoint
         string Formatted { get; set; }
         string RegexPattern { get; }
         PointType PointType { get; set; }
+        IPoint Clone();
     }
     public enum PointType
     {

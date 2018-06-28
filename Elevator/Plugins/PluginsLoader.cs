@@ -49,7 +49,6 @@ namespace Elevator.Plugins
         {
             try
             {
-
                 foreach (string fileName in Directory.EnumerateFiles(absPluginsDir, "*.*", SearchOption.TopDirectoryOnly))
                     try
                     {

@@ -48,7 +48,15 @@ namespace Elevator.Automation.Types
         {
             List<Door> doors = new List<Door>();
             for (int i = 0; i < count; i++)
-                doors.Add(new Door(defaultPoint, defaultPoint, defaultPoint, defaultPoint, defaultPoint, defaultPoint));
+                doors.Add(new Door(
+                        defaultPoint.Clone(),
+                        defaultPoint.Clone(),
+                        defaultPoint.Clone(),
+                        defaultPoint.Clone(),
+                        defaultPoint.Clone(),
+                        defaultPoint.Clone()
+                    )
+                );
             return doors;
         }
 

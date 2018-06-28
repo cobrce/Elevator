@@ -75,6 +75,14 @@ namespace Elevator.Automation.IOPoint
         public virtual string RegexPattern { get => @"^(?<device>[0-9]{1,2})\.(?<byte>[0-9]{1,2})\.(?<bit>)[0-9]{1,2}$"; }
         public virtual PointType PointType { get; set; }
         public override string ToString() => Formatted;
+
+        public IPoint Clone()
+        {
+            IPoint clone = (IPoint)Activator.CreateInstance(this.GetType());
+            clone.PointType = this.PointType;
+            clone.Formatted = this.Formatted;
+            return clone;
+        }
     }
 
 }
