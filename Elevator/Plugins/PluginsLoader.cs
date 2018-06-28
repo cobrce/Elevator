@@ -20,26 +20,48 @@ namespace Elevator.Plugins
 
 
         static internal List<IO> PluginsList;
+        static private List<Assembly> _loadedassemblies;
 
         static PluginsLoader()
         {
             PluginsList = new List<IO>();
+            _loadedassemblies = new List<Assembly>();
+            SetAssemblySover();
             ListPlugins();
+        }
+
+        private static void SetAssemblySover()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            // this happens when depedency are in "Plugins" directory, at this point all assemblies found in that folder
+            // are already loaded, so this function will try to solve the missing assembly from the _loadedassemblies
+            foreach (Assembly assembly in _loadedassemblies)
+                if (assembly.FullName == args.Name)
+                    return assembly;
+            return null;
         }
 
         private static void ListPlugins()
         {
-            //PluginsList.AddRange(ListPlugins(typeof(PluginsLoader).Assembly));
             try
             {
+
                 foreach (string fileName in Directory.EnumerateFiles(absPluginsDir, "*.*", SearchOption.TopDirectoryOnly))
-                {
                     try
                     {
-                        RegisterPlugins(Assembly.LoadFile(fileName));
+                        _loadedassemblies.Add(Assembly.LoadFile(fileName));
                     }
                     catch { }
-                }
+                foreach (Assembly asm in _loadedassemblies)
+                    try
+                    {
+                        RegisterPlugins(asm);
+                    }
+                    catch { }
             }
             catch { }
         }
