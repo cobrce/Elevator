@@ -78,10 +78,7 @@ namespace Elevator.Automation.IOPoint
 
         public IPoint Clone()
         {
-            IPoint clone = (IPoint)Activator.CreateInstance(this.GetType());
-            clone.PointType = this.PointType;
-            clone.Formatted = this.Formatted;
-            return clone;
+            return (IPoint)this.MemberwiseClone();
         }
     }
 
