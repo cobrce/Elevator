@@ -1,4 +1,4 @@
-﻿namespace Elevator.Test
+﻿namespace DummyPlcPlugin.Plugin
 {
     internal class DiscreteTimer
     {

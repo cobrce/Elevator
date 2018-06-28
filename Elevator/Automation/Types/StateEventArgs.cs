@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Elevator.Automation
+namespace Elevator.Automation.Types
 {
     class StateEventArgs : EventArgs
     {

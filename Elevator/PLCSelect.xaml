@@ -11,7 +11,20 @@
         WindowStartupLocation="CenterScreen"
         >
     <Window.Resources>
-        <NullableBoolConverter x:Key="NullableBoolConverter"/>
+        <!-- This style allows a validation error message to be 
+         displayed in a TextBox's tooltip. -->
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="0,8" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+            Value="{Binding 
+                    RelativeSource={RelativeSource Self}, 
+                    Path=(Validation.Errors)[0].ErrorContent
+                   }"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <ComboBox DisplayMemberPath="."
@@ -21,19 +34,20 @@
                   LoadingRow="doorsDataGrid_LoadingRow"                  
                   x:Name="doorsDataGrid" Height="124" Margin="10,37,0,0" VerticalAlignment="Top" AutoGenerateColumns="False" HorizontalAlignment="Left" Width="546">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Out : Open" Binding="{Binding OpenDoor,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Out : Close" Binding="{Binding CloseDoor,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="In : Button" Binding="{Binding LevelButton,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="In : Open sensor" Binding="{Binding DoorOpenSensor,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="In : Closed sensor" Binding="{Binding DoorClosedSensor,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="In : Elevator sensor" Binding="{Binding PositionSensor,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Out : Open" Binding="{Binding OpenDoor.Formatted,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Out : Close" Binding="{Binding CloseDoor.Formatted,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Button" Binding="{Binding LevelButton.Formatted,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Open sensor" Binding="{Binding DoorOpenSensor.Formatted,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Closed sensor" Binding="{Binding DoorClosedSensor.Formatted,Mode=TwoWay}"/>
+                <DataGridTextColumn Header="In : Elevator sensor" Binding="{Binding PositionSensor.Formatted,Mode=TwoWay}"/>
             </DataGrid.Columns>
         </DataGrid>
+
         <Label Content="Select PLC" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,6,0,0"/>
         <Label Content="Engine UP" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,166,0,0"/>
-        <TextBox Text="{Binding IOContext.EngineUP.PlcIoPoint,Mode=TwoWay}" x:Name="txtUP" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding IOContext.EngineUP.PlcIoPoint.Formatted,Mode=TwoWay}" x:Name="txtUP" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Engine Down" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="222,167,0,0"/>
-        <TextBox Text="{Binding IOContext.EngineDown.PlcIoPoint,Mode=TwoWay}"  x:Name="txtDown" HorizontalAlignment="Left" Height="23" Margin="307,170,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding IOContext.EngineDown.PlcIoPoint.Formatted,Mode=TwoWay}"  x:Name="txtDown" HorizontalAlignment="Left" Height="23" Margin="307,170,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btnLoad" IsEnabled="False" Content="Load" HorizontalAlignment="Left" Margin="10,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnLoad_Click" />
         <Button x:Name="btnSave" IsEnabled="False" Content="Save" HorizontalAlignment="Left" Margin="102,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSave_Click" />
         <Button x:Name="btnSelect" IsEnabled="False" Content="Select" HorizontalAlignment="Left" Margin="469,201,0,0" VerticalAlignment="Top" Width="87" RenderTransformOrigin="0.423,0.199" Height="23" Click="btnSelect_Click"/>

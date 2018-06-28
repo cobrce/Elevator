@@ -1,4 +1,7 @@
-﻿namespace Elevator.Automation
+﻿using Elevator.Automation.IOPoint;
+using Elevator.Automation.IOReadWrite;
+
+namespace Elevator.Automation.Notify
 {
     public interface INotifier
     {

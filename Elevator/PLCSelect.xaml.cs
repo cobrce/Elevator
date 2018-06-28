@@ -1,7 +1,10 @@
 ﻿using Elevator.Automation;
+using Elevator.Automation.IOReadWrite;
 using Elevator.Plugins;
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,9 +16,12 @@ namespace Elevator
     /// </summary>
     public partial class PLCSelect : Window
     {
+        public string test { get; set; }
         public PLCSelect()
         {
             InitializeComponent();
+            DataContext = this;
+
         }
 
         public IO SelectedIO { get; private set; }
@@ -61,13 +67,11 @@ namespace Elevator
                         UpdateGUI();
                         MessageBox.Show(this, "Loaded successfuly");
                     }
-                    else
-                        MessageBox.Show(this, "Error loading");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message);
+                MessageBox.Show(this, (ex.InnerException ?? ex).Message);
             }
         }
 
@@ -90,7 +94,7 @@ namespace Elevator
         {
             foreach (var binding in bindingExpressions)
                 binding.UpdateTarget();
-            
+
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

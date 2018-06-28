@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using Elevator.Automation.Notify;
+using Elevator.Automation.Types;
 
-namespace Elevator.Automation
+namespace Elevator.Automation.IOReadWrite
 {
     public class IOContext
     {

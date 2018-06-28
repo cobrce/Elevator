@@ -1,4 +1,6 @@
-﻿namespace Elevator.Automation
+﻿using Elevator.Automation.IOPoint;
+
+namespace Elevator.Automation
 {
     public interface IPLC
     {

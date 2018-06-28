@@ -1,8 +1,11 @@
 ﻿//#define safe
+using Elevator.Automation.IOPoint;
+using Elevator.Automation.Notify;
+using Elevator.Automation.Types;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Elevator.Automation
+namespace Elevator.Automation.IOReadWrite
 {
     // this class is responsible to read/write from/to PLC outputs/inputs
     public class IO
@@ -44,14 +47,14 @@ namespace Elevator.Automation
                 Thread.Sleep(_msTimeout);
             }
         }
-        
+
         internal void PressButton(int level)
         {
             if (level < IOContext.Doors.Count)
                 PulseOnDigitalInput(IOContext.Doors[level].LevelButton);
         }
 
-        private void PulseOnDigitalInput(int input)
+        private void PulseOnDigitalInput(IPoint input)
         {
 #if !safe
             new Thread(() =>
@@ -65,8 +68,8 @@ namespace Elevator.Automation
 #endif
         }
 
-        private void WriteOnDigitalInput(int input, int state) => PLC.Write(input, state);
-        private int? ReadBoolAsInt(int output) => PLC.Read(output);
+        private void WriteOnDigitalInput(IPoint input, int state) => PLC.Write(input, state);
+        private int? ReadBoolAsInt(IPoint output) => PLC.Read(output);
         private void ReadState(Notifier notifier) => notifier.SetState(this, ReadBoolAsInt(notifier.PlcIoPoint));
         public void SetDoorPositionSensor(int level, bool sensorState) => WriteOnDigitalInput(IOContext.Doors[level].PositionSensor, sensorState ? 1 : 0);
         public void SetDoorOpenSensor(int level, bool sensorState) => WriteOnDigitalInput(IOContext.Doors[level].DoorOpenSensor, sensorState ? 1 : 0);

@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
@@ -56,8 +59,11 @@
     <Compile Include="Animation\AbstractAnimation.cs" />
     <Compile Include="Animation\AbstractOpenCloseDoorAnimation.cs" />
     <Compile Include="Animation\OpenCloseDoor.cs" />
-    <Compile Include="Automation\Door.cs" />
+    <Compile Include="Automation\IOPoint\AbstractPoint.cs" />
+    <Compile Include="Automation\Types\Door.cs" />
+    <Compile Include="Automation\IOPoint\Point.cs" />
     <Compile Include="Automation\IPLC.cs" />
+    <Compile Include="Automation\IOPoint\IPoint.cs" />
     <Compile Include="Plugins\AbstractPlugin.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="PLCSelect.xaml.cs">
@@ -75,12 +81,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Automation\AbstractNotifier.cs" />
-    <Compile Include="Automation\INotifier.cs" />
-    <Compile Include="Automation\StateEventArgs.cs" />
-    <Compile Include="Automation\Notify.cs" />
-    <Compile Include="Automation\IO.cs" />
-    <Compile Include="Automation\IOContext.cs" />
+    <Compile Include="Automation\Notify\AbstractNotifier.cs" />
+    <Compile Include="Automation\Notify\INotifier.cs" />
+    <Compile Include="Automation\Types\StateEventArgs.cs" />
+    <Compile Include="Automation\Notify\Notifier.cs" />
+    <Compile Include="Automation\IOReadWrite\IO.cs" />
+    <Compile Include="Automation\IOReadWrite\IOContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -107,7 +113,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

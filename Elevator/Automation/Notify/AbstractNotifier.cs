@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Elevator.Automation.IOPoint;
+using Elevator.Automation.IOReadWrite;
+using Elevator.Automation.Types;
+using System;
 
-namespace Elevator.Automation
+namespace Elevator.Automation.Notify
 {
     [Serializable]
     public abstract class AbstractNotifier : INotifier
@@ -27,6 +30,11 @@ namespace Elevator.Automation
                 OnEdge?.Invoke(sender, new StateEventArgs(value));
 
             _state = value;
+        }
+
+        public AbstractNotifier()
+        {
+
         }
 
         public AbstractNotifier(IPoint plcIoPoint)

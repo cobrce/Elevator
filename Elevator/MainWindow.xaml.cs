@@ -1,5 +1,8 @@
 ﻿using Elevator.Animation;
 using Elevator.Automation;
+using Elevator.Automation.IOReadWrite;
+using Elevator.Automation.Notify;
+using Elevator.Automation.Types;
 using System;
 using System.Windows;
 using System.Windows.Controls;

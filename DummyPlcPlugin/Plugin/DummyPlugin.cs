@@ -1,7 +1,8 @@
 ﻿using Elevator.Automation;
+using Elevator.Automation.IOReadWrite;
 using Elevator.Plugins;
 
-namespace Elevator.Test
+namespace DummyPlcPlugin.Plugin
 {
     class DummyPlugin : AbstractPlugin
     {

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{79C75C22-6483-4E8A-8BBA-DD878F7B8766}</ProjectGuid>
+    <ProjectGuid>{3056CF8C-00E6-4958-AAA3-81F4A492721A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DummyPlcPlugin</RootNamespace>
-    <AssemblyName>DummyPlcPlugin</AssemblyName>
+    <RootNamespace>Step7PlcsimPlugin</RootNamespace>
+    <AssemblyName>Step7PlcsimPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.S7PROSIMLib">
+      <HintPath>.\Interop.S7PROSIMLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,11 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugin\DummyPoint.cs" />
+    <Compile Include="PlcsimPlugin.cs" />
+    <Compile Include="Plcsim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Plugin\DiscreteTimer.cs" />
-    <Compile Include="Plugin\DummyPLC.cs" />
-    <Compile Include="Plugin\DummyPlugin.cs" />
+    <Compile Include="s7Point.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Elevator\Elevator.csproj">

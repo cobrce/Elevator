@@ -1,9 +1,12 @@
 ﻿using Elevator.Automation;
+using Elevator.Automation.IOPoint;
+using Elevator.Automation.Notify;
+using Elevator.Automation.Types;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Elevator.Test
+namespace DummyPlcPlugin.Plugin
 {
     class DummyPLC : IPLC
     {
@@ -12,7 +15,7 @@ namespace Elevator.Test
         {
             get
             {
-                return (_engineUpNotifier != null) ? _engineUpNotifier : _engineUpNotifier = new Notifier(_upEngine = _io++);
+                return (_engineUpNotifier != null) ? _engineUpNotifier : _engineUpNotifier = new Notifier(new DummyPoint(_upEngine = _io++));
             }
         }
 
@@ -21,7 +24,7 @@ namespace Elevator.Test
         {
             get
             {
-                return (_engineDownNotifier != null) ? _engineDownNotifier : _engineDownNotifier = new Notifier(_downEngine = _io++);
+                return (_engineDownNotifier != null) ? _engineDownNotifier : _engineDownNotifier = new Notifier(new DummyPoint(_downEngine = _io++));
             }
         }
 
@@ -229,7 +232,14 @@ namespace Elevator.Test
         private Door Generatedoor(int i, params int[] points)
         {
             _nPointsPerDoor = points.Length;
-            return new Door(points[0], points[1], points[2], points[3], points[4], points[5]);
+            return new Door(
+                new DummyPoint(points[0]),
+                new DummyPoint(points[1]),
+                new DummyPoint(points[2]),
+                new DummyPoint(points[3]),
+                new DummyPoint(points[4]),
+                new DummyPoint(points[5])
+            );
         }
 
         public int? Read(IPoint output)
@@ -243,7 +253,7 @@ namespace Elevator.Test
                 return _engine[1];
 
             else
-                return ReadIoDoor(output);
+                return ReadIoDoor(output.ByteIndex);
 
         }
 
@@ -264,34 +274,34 @@ namespace Elevator.Test
             {
                 Door door = Doors[i];
                 doorindex = i;
-                if (outputIndex == door.OpenDoor)
+                if (outputIndex == door.OpenDoor.ByteIndex)
                 {
                     point = 0;
                     return true;
                 }
 
-                else if (outputIndex == door.CloseDoor)
+                else if (outputIndex == door.CloseDoor.ByteIndex)
                 {
                     point = 1;
                     return true;
                 }
 
-                else if (outputIndex == door.LevelButton)
+                else if (outputIndex == door.LevelButton.ByteIndex)
                 {
                     point = 2;
                     return true;
                 }
-                else if (outputIndex == door.DoorOpenSensor)
+                else if (outputIndex == door.DoorOpenSensor.ByteIndex)
                 {
                     point = 3;
                     return true;
                 }
-                else if (outputIndex == door.DoorClosedSensor)
+                else if (outputIndex == door.DoorClosedSensor.ByteIndex)
                 {
                     point = 4;
                     return true;
                 }
-                else if (outputIndex == door.PositionSensor)
+                else if (outputIndex == door.PositionSensor.ByteIndex)
                 {
                     point = 5;
                     return true;
@@ -300,10 +310,10 @@ namespace Elevator.Test
             return false;
         }
 
-        public void Write(int input, int state)
+        public void Write(IPoint input, int state)
         {
             if (_connected)
-                if (GetOutputIndex(input, out int i, out int j))
+                if (GetOutputIndex(input.ByteIndex, out int i, out int j))
                     _ioDoors[i][j] = state;
         }
 

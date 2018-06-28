@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Elevator.Automation.IOPoint;
+using Elevator.Automation.Notify;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 
-namespace Elevator.Automation
+namespace Elevator.Automation.Types
 {
     public class Door
     {
-        public int LevelButton { get; set; }
-
-        private int _openDoor;
-        public int OpenDoor
+        public IPoint LevelButton { get; set; }
+        
+        private IPoint _openDoor;
+        public IPoint OpenDoor
         {
             get
             {
@@ -20,11 +23,11 @@ namespace Elevator.Automation
                 OpenDoorNotifier.PlcIoPoint = value;
             }
         }
+        
+        public IPoint DoorOpenSensor { get; set; }
 
-        public int DoorOpenSensor { get; set; }
-
-        private int _closeDoor;
-        public int CloseDoor
+        private IPoint _closeDoor;
+        public IPoint CloseDoor
         {
             get
             {
@@ -36,14 +39,16 @@ namespace Elevator.Automation
                 CloseDoorNotifier.PlcIoPoint = value;
             }
         }
-        public int DoorClosedSensor { get; set; }
-        public int PositionSensor { get; set; }
+        
+        public IPoint DoorClosedSensor { get; set; }
 
-        public static List<Door> GenerateDoors(int count)
+        public IPoint PositionSensor { get; set; }
+
+        public static List<Door> GenerateDoors(int count,IPoint defaultPoint)
         {
             List<Door> doors = new List<Door>();
             for (int i = 0; i < count; i++)
-                doors.Add(new Door());
+                doors.Add(new Door(defaultPoint, defaultPoint, defaultPoint, defaultPoint, defaultPoint, defaultPoint));
             return doors;
         }
 
@@ -59,7 +64,7 @@ namespace Elevator.Automation
         /// <param name="closeDoor">The PLC output to close the door</param>
         /// <param name="doorClosedSensor">The PLC input telling when the door is fully closed</param>
         /// <param name="positionSensor">The PLC input telling that the elevator arrived to this level</param>
-        public Door(int openDoor, int closeDoor, int levelButton, int doorOpenSensor, int doorClosedSensor, int positionSensor)
+        public Door(IPoint openDoor, IPoint closeDoor, IPoint levelButton, IPoint doorOpenSensor, IPoint doorClosedSensor, IPoint positionSensor)
         {
             LevelButton = levelButton;
             OpenDoor = openDoor;
@@ -69,7 +74,7 @@ namespace Elevator.Automation
             DoorClosedSensor = doorClosedSensor;
         }
 
-        public Notifier OpenDoorNotifier { get; set; } = new Notifier(0);
-        public Notifier CloseDoorNotifier { get; set; } = new Notifier(0);
+        public Notifier OpenDoorNotifier { get; set; } = new Notifier();
+        public Notifier CloseDoorNotifier { get; set; } = new Notifier();
     }
 }

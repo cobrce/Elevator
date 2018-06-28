@@ -1,4 +1,7 @@
 ﻿using Elevator.Automation;
+using Elevator.Automation.IOReadWrite;
+using Elevator.Automation.Notify;
+using Elevator.Automation.Types;
 using System.Collections.Generic;
 
 namespace Elevator.Plugins
