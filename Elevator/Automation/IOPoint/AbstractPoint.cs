@@ -71,7 +71,7 @@ namespace Elevator.Automation.IOPoint
 
             return int.Parse(value);
         }
-
+        [JsonIgnore]
         public virtual string RegexPattern { get => @"^(?<device>[0-9]{1,2})\.(?<byte>[0-9]{1,2})\.(?<bit>)[0-9]{1,2}$"; }
         public virtual PointType PointType { get; set; }
         public override string ToString() => Formatted;

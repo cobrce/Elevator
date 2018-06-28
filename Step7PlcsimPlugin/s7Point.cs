@@ -17,7 +17,7 @@ namespace Step7PlcsimPlugin
         {
         }
 
-        protected override string GetFormatted() => $"{ByteIndex:d1}.{BitIndex:d1}";
-        public override string RegexPattern => @"^(?<byte>[0-9]{1})\.(?<bit>[0-7]{1})$";
+        protected override string GetFormatted() => $"{ByteIndex}.{BitIndex:d1}";
+        public override string RegexPattern => @"^(?<byte>[0-9]{1,2})\.(?<bit>[0-7]{1})$";
     }
 }

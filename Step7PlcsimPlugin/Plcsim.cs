@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using S7PROSIMLib;
+
 using Elevator.Automation.IOPoint;
 using System.Reflection;
 using System.IO;
+using S7PROSIMLib;
+using System;
 
 namespace Step7PlcsimPlugin
 {
@@ -14,7 +16,6 @@ namespace Step7PlcsimPlugin
         S7ProSimClass sim = new S7ProSimClass();
         public Plcsim()
         {
-
         }
 
         public string Name { get; set; } = "Step7 Plcsim plugin for Elevator";
@@ -24,6 +25,7 @@ namespace Step7PlcsimPlugin
             try
             {
                 sim.Connect();
+                sim.SetScanMode(ScanModeConstants.ContinuousScan);
                 if (sim.GetState() == "ERROR")
                     return false;
                 return true;
@@ -37,6 +39,24 @@ namespace Step7PlcsimPlugin
         }
 
         public int? Read(IPoint output)
+        {
+            object data = null;
+            sim.ReadOutputPoint(output.ByteIndex, output.BitIndex, GetDataType(output), ref data);
+
+            return ParseObject(data);
+        }
+
+        private static int? ParseObject(object data)
+        {
+            if (data is bool b)
+                return b ? 1 : 0;
+            else if (int.TryParse(data.ToString(), out int parsed))
+                return parsed;
+            else
+                return null;
+        }
+
+        private static PointDataTypeConstants GetDataType(IPoint output)
         {
             PointDataTypeConstants type;
             switch (output.PointType)
@@ -54,13 +74,7 @@ namespace Step7PlcsimPlugin
                     type = PointDataTypeConstants.S7_Bit;
                     break;
             }
-            object o = null;
-            sim.ReadOutputPoint(output.ByteIndex, output.BitIndex, type, ref o);
-
-            if (int.TryParse(o.ToString(), out int parsed))
-                return parsed;
-            else
-                return null;
+            return type;
         }
 
         public void Run()
@@ -75,8 +89,45 @@ namespace Step7PlcsimPlugin
 
         public void Write(IPoint input, int state)
         {
-            object o = state;
-            sim.WriteInputPoint(input.ByteIndex, input.BitIndex, ref o);
+            Write(input, ToBoolArray(input.PointType, state));
+        }
+
+        private void Write(IPoint input, bool[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                object o = data[i];
+                sim.WriteInputPoint(input.ByteIndex, input.BitIndex, ref o);
+            }
+        }
+
+        private bool[] ToBoolArray(PointType pointType, int state)
+        {
+            int size;
+            switch (pointType)
+            {
+                case PointType.pBit:
+                    return new bool[] { (state & 1) == 1 };
+                case PointType.pByte:
+                    size = 8;
+                    break;
+                case PointType.pWord:
+                    size = 16;
+                    break;
+                default:
+                    size = 32;
+                    break;
+            }
+            return ToBoolArray(size, state);
+        }
+
+        private bool[] ToBoolArray(int count, int state)
+        {
+            bool[] data = new bool[count];
+            for (int i = 0; i < count; i++)
+                data[i] = ((state >> (count - i - 1)) & 1) == 1;
+            return data;
+
         }
     }
 }

@@ -66,20 +66,20 @@ namespace Elevator.Automation.Types
         }
         /// <summary>
         /// 
-        /// <param name="levelButton">The PLC input notified when button is pressed</param>
         /// <param name="openDoor">The PLC output to open the door</param>
-        /// <param name="doorOpenSensor">The PLC input telling when the door is fully open</param>
         /// <param name="closeDoor">The PLC output to close the door</param>
+        /// <param name="levelButton">The PLC input notified when button is pressed</param>
+        /// <param name="doorOpenSensor">The PLC input telling when the door is fully open</param>
         /// <param name="doorClosedSensor">The PLC input telling when the door is fully closed</param>
         /// <param name="positionSensor">The PLC input telling that the elevator arrived to this level</param>
         public Door(IPoint openDoor, IPoint closeDoor, IPoint levelButton, IPoint doorOpenSensor, IPoint doorClosedSensor, IPoint positionSensor)
         {
-            LevelButton = levelButton;
             OpenDoor = openDoor;
-            DoorOpenSensor = doorOpenSensor;
             CloseDoor = closeDoor;
-            PositionSensor = positionSensor;
+            LevelButton = levelButton;
+            DoorOpenSensor = doorOpenSensor;
             DoorClosedSensor = doorClosedSensor;
+            PositionSensor = positionSensor;
         }
 
         public Notifier OpenDoorNotifier { get; set; } = new Notifier();

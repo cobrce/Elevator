@@ -17,12 +17,32 @@ namespace Step7PlcsimPlugin
             return new IO(
                 new Plcsim(),
                 new IOContext(
-                    // since these values are to be filled by the user we can just init with default value
-                    Door.GenerateDoors(3, new S7Point(0, 0)),
-                    new Notifier(new S7Point(2, 0)),
-                    new Notifier(new S7Point(2, 1))
+                    GenerateDoors(3),
+                    new Notifier(new S7Point(4, 6)),
+                    new Notifier(new S7Point(4, 7))
                 )
             );
+        }
+
+        private ICollection<Door> GenerateDoors(int count)
+        {
+            List<Door> doors = new List<Door>();
+            for (int i = 0; i < count; i++)
+                doors.Add(
+                    new Door(
+                        new S7Point(4, i * 2),
+                        new S7Point(4, i * 2 + 1),
+                        genS7Point(i * 4),
+                        genS7Point(i * 4 + 1),
+                        genS7Point(i * 4 + 2),
+                        genS7Point(i * 4 + 3)
+                    )
+                );
+            return doors;
+        }
+        private S7Point genS7Point(int i)
+        {
+            return new S7Point(i / 8, i % 8);
         }
     }
 }

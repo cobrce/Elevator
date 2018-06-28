@@ -52,6 +52,8 @@ namespace Elevator
         private void SelectIO(IO selectedIO)
         {
             _selectedIO = selectedIO;
+            _selectedIO.OpenClosedSensors = OpenClosedSensors;
+            _selectedIO.ReadElevatorSensors = ReadElevatorSensors;
 
             SetEngineEventHandlers(
                 _selectedIO.IOContext.EngineUP,
@@ -130,7 +132,6 @@ namespace Elevator
             position.Dispatcher.Invoke((Action)(() =>
             {
                 _moveUpDown.Animate(position, direction);
-                ElevatorMoved();
             }));
         }
         /// <summary>
@@ -141,18 +142,25 @@ namespace Elevator
         private void DoorOpenClose(object sender, int level, int open)
         {
             if (sender is IO io && io == _selectedIO)
-            {
                 _doorsOpenClose.Animate(_openDoorsShapes[level], open);
-                _selectedIO.SetDoorOpenSensor(level, _doorsOpenClose.isOpen(_openDoorsShapes[level]));
-                _selectedIO.SetDoorClosesSensor(level, _doorsOpenClose.isClosed(_openDoorsShapes[level]));
-            }
         }
 
-        private void ElevatorMoved()
+        private void OpenClosedSensors(int level, out bool open, out bool closed)
         {
-            double top = GetMiddlePosition(position);
-            for (int i = 0; i < _openDoorsShapes.Length; i++)
-                _selectedIO.SetDoorPositionSensor(i, ComparePositionToDoor(top, _openDoorsShapes[i]));
+            open = (bool)Dispatcher.Invoke((Func<bool>)((() => { return _doorsOpenClose.isOpen(_openDoorsShapes[level]); })));
+            closed = (bool)Dispatcher.Invoke((Func<bool>)(() => { return _doorsOpenClose.isClosed(_openDoorsShapes[level]); }));
+        }
+
+        private bool[] ReadElevatorSensors()
+        {
+            return (bool[])Dispatcher.Invoke((Func<bool[]>)(() =>
+          {
+              bool[] states = new bool[_openDoorsShapes.Length];
+              double top = GetMiddlePosition(position);
+              for (int i = 0; i < _openDoorsShapes.Length; i++)
+                  states[i] = ComparePositionToDoor(top, _openDoorsShapes[i]);
+              return states;
+          }));
         }
 
         private bool ComparePositionToDoor(double top, Shape door, double tolerance = 2)
