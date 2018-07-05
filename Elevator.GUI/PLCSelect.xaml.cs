@@ -77,10 +77,7 @@ namespace Elevator
 
         private void UpdateGUI()
         {
-            foreach (object item in doorsDataGrid.ItemsSource)
-                if (doorsDataGrid.ItemContainerGenerator.ContainerFromItem(item) is DataGridRow row)
-                    UpdateBindingsExpressionTarget(row.BindingGroup.BindingExpressions);
-
+            doorsDataGrid.Items.Refresh(); // We could simply do this?
             UpdateTextBox(txtDown);
             UpdateTextBox(txtUP);
         }

@@ -19,7 +19,7 @@ namespace Elevator.Plugins
             );
 
 
-        static internal List<IO> PluginsList;
+        static public List<IO> PluginsList;
         static private List<Assembly> _loadedassemblies;
 
         static PluginsLoader()

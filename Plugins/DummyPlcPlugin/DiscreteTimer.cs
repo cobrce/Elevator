@@ -1,4 +1,4 @@
-﻿namespace DummyPlcPlugin.Plugin
+﻿namespace DummyPlcPlugin
 {
     internal class DiscreteTimer
     {

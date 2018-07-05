@@ -89,7 +89,7 @@ namespace Elevator.Automation.IOReadWrite
             }
         }
 
-        internal void PressButton(int level)
+        public void PressButton(int level)
         {
             if (level < IOContext.Doors.Count)
                 PulseOnDigitalInput(IOContext.Doors[level].LevelButton);

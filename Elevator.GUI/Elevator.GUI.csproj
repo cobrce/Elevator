@@ -59,17 +59,9 @@
     <Compile Include="Animation\AbstractAnimation.cs" />
     <Compile Include="Animation\AbstractOpenCloseDoorAnimation.cs" />
     <Compile Include="Animation\OpenCloseDoor.cs" />
-    <Compile Include="Automation\IOPoint\AbstractPoint.cs" />
-    <Compile Include="Automation\Types\Door.cs" />
-    <Compile Include="Automation\IOPoint\Point.cs" />
-    <Compile Include="Automation\IPLC.cs" />
-    <Compile Include="Automation\IOPoint\IPoint.cs" />
-    <Compile Include="Plugins\AbstractPlugin.cs" />
-    <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="PLCSelect.xaml.cs">
       <DependentUpon>PLCSelect.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\PluginsLoader.cs" />
     <Compile Include="SaverLoader.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -81,12 +73,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Automation\Notify\AbstractNotifier.cs" />
-    <Compile Include="Automation\Notify\INotifier.cs" />
-    <Compile Include="Automation\Types\StateEventArgs.cs" />
-    <Compile Include="Automation\Notify\Notifier.cs" />
-    <Compile Include="Automation\IOReadWrite\IO.cs" />
-    <Compile Include="Automation\IOReadWrite\IOContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -121,6 +107,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Elevator.Core\Elevator.Core.csproj">
+      <Project>{CAF63326-0383-44B4-B930-F426B156B325}</Project>
+      <Name>Elevator.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

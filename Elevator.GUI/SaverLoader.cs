@@ -1,15 +1,11 @@
-﻿using Elevator.Automation;
-using Elevator.Automation.IOReadWrite;
+﻿using Elevator.Automation.IOReadWrite;
 using Elevator.Automation.Types;
 using Microsoft.Win32;
-using System;
-using System.IO;
-using System.Web.Script.Serialization;
 using Newtonsoft.Json;
-using System.Runtime.Serialization;
 using Newtonsoft.Json.Serialization;
-using System.Reflection;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Elevator
 {
@@ -99,8 +95,7 @@ namespace Elevator
     {
         internal Type pointType;
         Dictionary<string, Type> knownTypes = new Dictionary<string, Type>();
-
-
+        
         public void BindToName(Type serializedType, out string assemblyName, out string typeName)
         {
             assemblyName = serializedType.Assembly.ToString();
@@ -113,20 +108,6 @@ namespace Elevator
                 return pointType;
             else
                 throw new Exception($"This configuration file is for {assemblyName}");
-            //if (knownTypes.ContainsKey(typeName))
-            //    return knownTypes[typeName];
-
-            //foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
-            //{
-            //    if (asm.GetName().Name == assemblyName)
-            //    {
-            //        Type[] types = asm.GetTypes();
-            //        foreach (Type type in types)
-            //            if (type.Name == typeName)
-            //                return knownTypes[typeName] = type;
-            //    }
-            //}
-            //return null;
         }
     }
 }

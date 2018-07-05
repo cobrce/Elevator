@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Elevator\bin\Debug\Plugins\</OutputPath>
+    <OutputPath>..\..\Elevator.GUI\bin\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,16 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugin\DummyPoint.cs" />
+    <Compile Include="DummyPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Plugin\DiscreteTimer.cs" />
-    <Compile Include="Plugin\DummyPLC.cs" />
-    <Compile Include="Plugin\DummyPlugin.cs" />
+    <Compile Include="DiscreteTimer.cs" />
+    <Compile Include="DummyPLC.cs" />
+    <Compile Include="DummyPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Elevator\Elevator.csproj">
-      <Project>{2923d546-dae8-4869-bdc4-2deea7f4bb19}</Project>
-      <Name>Elevator</Name>
+    <ProjectReference Include="..\..\Elevator.Core\Elevator.Core.csproj">
+      <Project>{caf63326-0383-44b4-b930-f426b156b325}</Project>
+      <Name>Elevator.Core</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

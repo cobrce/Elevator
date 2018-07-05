@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 
-namespace DummyPlcPlugin.Plugin
+namespace DummyPlcPlugin
 {
     class DummyPLC : IPLC
     {

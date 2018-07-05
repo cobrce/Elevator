@@ -45,6 +45,7 @@ namespace Elevator
 
         private void InitAnimations()
         {
+            
             _moveUpDown = new MoveUpDown(1);
             _doorsOpenClose = new OpenCloseDoor(1, door0.Width - 10, 2);
         }

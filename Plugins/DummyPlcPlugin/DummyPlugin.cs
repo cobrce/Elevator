@@ -2,7 +2,7 @@
 using Elevator.Automation.IOReadWrite;
 using Elevator.Plugins;
 
-namespace DummyPlcPlugin.Plugin
+namespace DummyPlcPlugin
 {
     class DummyPlugin : AbstractPlugin
     {
