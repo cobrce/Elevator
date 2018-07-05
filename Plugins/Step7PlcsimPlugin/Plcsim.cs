@@ -41,8 +41,21 @@ namespace Step7PlcsimPlugin
         public int? Read(IPoint output)
         {
             object data = null;
-            sim.ReadOutputPoint(output.ByteIndex, output.BitIndex, GetDataType(output), ref data);
-
+            PointDataTypeConstants DataType = GetDataType(output);
+            switch (output.Segment)
+            {
+                case MemorySegment.output:
+                    sim.ReadOutputPoint(output.ByteIndex, output.BitIndex, DataType, ref data);
+                    break;
+                case MemorySegment.datablock:
+                    sim.ReadDataBlockValue(output.DeviceIndex, output.ByteIndex, output.BitIndex, DataType, ref data);
+                    break;
+                case MemorySegment.memory:
+                    sim.ReadFlagValue(output.ByteIndex, output.BitIndex, DataType, ref data);
+                    break;
+                default:
+                    return null;
+            }
             return ParseObject(data);
         }
 
@@ -94,10 +107,22 @@ namespace Step7PlcsimPlugin
 
         private void Write(IPoint input, bool[] data)
         {
+
             for (int i = 0; i < data.Length; i++)
             {
                 object o = data[i];
-                sim.WriteInputPoint(input.ByteIndex, input.BitIndex, ref o);
+                switch (input.Segment)
+                {
+                    case MemorySegment.input:
+                        sim.WriteInputPoint(input.ByteIndex, input.BitIndex, ref o);
+                        break;
+                    case MemorySegment.memory:
+                        sim.WriteFlagValue(input.ByteIndex, input.BitIndex, ref o);
+                        break;
+                    case MemorySegment.datablock:
+                        sim.WriteDataBlockValue(input.DeviceIndex, input.ByteIndex, input.BitIndex, ref o);
+                        break;
+                }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Elevator.Automation;
+using Elevator.Automation.IOPoint;
 using Elevator.Automation.IOReadWrite;
 using Elevator.Automation.Notify;
 using Elevator.Automation.Types;
@@ -32,17 +33,17 @@ namespace Step7PlcsimPlugin
                     new Door(
                         new S7Point(4, i * 2),
                         new S7Point(4, i * 2 + 1),
-                        genS7Point(i * 4),
-                        genS7Point(i * 4 + 1),
-                        genS7Point(i * 4 + 2),
-                        genS7Point(i * 4 + 3)
+                        genS7InputPoint(i * 4),
+                        genS7InputPoint(i * 4 + 1),
+                        genS7InputPoint(i * 4 + 2),
+                        genS7InputPoint(i * 4 + 3)
                     )
                 );
             return doors;
         }
-        private S7Point genS7Point(int i)
+        private S7Point genS7InputPoint(int i)
         {
-            return new S7Point(i / 8, i % 8);
+            return new S7Point(i / 8, i % 8, segment: MemorySegment.input);
         }
     }
 }

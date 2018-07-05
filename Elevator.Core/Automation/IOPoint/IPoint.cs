@@ -14,6 +14,8 @@ namespace Elevator.Automation.IOPoint
         string RegexPattern { get; }
         PointType PointType { get; set; }
         IPoint Clone();
+        MemorySegment Segment { get; set; }
+
     }
     public enum PointType
     {
@@ -22,5 +24,16 @@ namespace Elevator.Automation.IOPoint
         pWord,
         pDword,
         pOther
+    }
+
+    public enum MemorySegment
+    {
+        input,
+        output,
+        memory,
+        datablock,
+        timer,
+        counter,
+        register
     }
 }

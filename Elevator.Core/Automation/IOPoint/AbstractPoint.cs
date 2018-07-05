@@ -14,12 +14,13 @@ namespace Elevator.Automation.IOPoint
         {
 
         }
-        public AbstractPoint(int byteIndex, PointType pointType = PointType.pBit)
+        public AbstractPoint(int byteIndex, PointType pointType = PointType.pBit,MemorySegment segment = MemorySegment.output)
         {
+            Segment = segment;
             PointType = pointType;
             ByteIndex = byteIndex;
         }
-        public AbstractPoint(int deviceIndex, int byteIndex, int bitIndex, PointType pointType = PointType.pBit)
+        public AbstractPoint(int deviceIndex, int byteIndex, int bitIndex, PointType pointType = PointType.pBit,MemorySegment segment = MemorySegment.output)
         {
             PointType = pointType;
             DeviceIndex = deviceIndex;
@@ -74,6 +75,8 @@ namespace Elevator.Automation.IOPoint
         [JsonIgnore]
         public virtual string RegexPattern { get => @"^(?<device>[0-9]{1,2})\.(?<byte>[0-9]{1,2})\.(?<bit>)[0-9]{1,2}$"; }
         public virtual PointType PointType { get; set; }
+        public virtual MemorySegment Segment { get; set; }
+
         public override string ToString() => Formatted;
 
         public IPoint Clone()
